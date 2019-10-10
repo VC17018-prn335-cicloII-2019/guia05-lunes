@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../resources/template/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:rs="http://xmlns.jcp.org/jsf/composite/components">
+    <ui:define name="title">#{tradPel['select.nombreClase']}</ui:define>
+    <ui:define name="content">
+        <h1><p:outputLabel value="#{trad['crud.tabla.titulo']} #{tradPel['select.nombreClase']}"/></h1>
+        <h:form id="tabla">
+            <h:outputText value="No existen registros en la tabla, por favor revisar que todos los campos esten llenos" rendered="#{empty peliculaBean.modelo}"/>
+            <p:dataTable var="t" value="#{peliculaBean.modelo}" paginator="true" rows="5" paginatorPosition="bottom" 
+                         selectionMode="single" id="Pelicula" lazy="true" selection="#{peliculaBean.registro}" rendered="#{not empty peliculaBean.modelo}">
+                <p:column headerText="#{tradPel['select.id']}">
+                    <h:outputText value="#{t.idPelicula}"/>
+                </p:column>
+                <p:column headerText="#{tradPel['select.titulo']}">
+                    <h:outputText value="#{t.titulo}"/>
+                </p:column>
+                <p:column headerText="#{tradPel['select.director']}">
+                    <h:outputText value="#{t.idDirector.nombre}  #{t.idDirector.apellido}"/>
+                </p:column>
+                <p:column headerText="#{tradPel['select.clasificacion']}">
+                    <h:outputText value="#{t.idClasificacion.clasificacion}"/>
+                </p:column>
+                <p:column headerText="#{tradPel['select.duracion']}">
+                    <h:outputText value="#{t.duracion}"/>
+                </p:column>
+                <p:column headerText="#{tradPel['select.fecha']}">
+                    <h:outputText value="#{t.fechaEstreno}">
+                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{tradPel['select.sinopsis']}" colspan="5">
+                    <h:outputText value="#{t.sinopsis}"/>
+                </p:column>
+                <p:ajax event="rowSelect" listener="#{peliculaBean.onRowSelect}" update=":formulariocrud"/>
+                <p:ajax event="rowUnselect" listener="#{peliculaBean.onRowDeselect}" update=":formulariocrud"/>
+            </p:dataTable>
+            <h:commandLink value="">
+                <p:graphicImage library="images" name="pdf2.png" width="60" height="60"/>
+                <p:dataExporter type="pdf" target="Pelicula" fileName="VistaPeliculas"/>
+            </h:commandLink>
+        </h:form>
+            <h1><p:outputLabel>CRUD vista Pelicula</p:outputLabel></h1>
+        <h:form id="formulariocrud" >
+            <h:panelGrid columns="2" id="formulariodatos">
+                <p:outputLabel value="#{tradPel['select.id']}" for="txtId"/>
+                <p:inputNumber value="#{peliculaBean.registro.idPelicula}" id="txtId" disabled="false" decimalPlaces="0" required="true"/>
+                <p:outputLabel value="#{tradPel['select.titulo']}" for="txtTitulo"/>
+                <p:inputText value="#{peliculaBean.registro.titulo}" id="txtTitulo" required="true"/>
+                <p:outputLabel value="#{tradPel['select.director']}" for="cbxDirector"/>
+                <p:selectOneMenu id="cbxDirector" value="#{peliculaBean.registro.idDirector}" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{tradPel['select.selecDirector']}" itemValue="#{null}"/>
+                    <f:selectItems value="#{peliculaBean.directorList}" var="d" itemValue="#{d}" itemLabel="#{d.nombre} #{d.apellido}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="#{tradPel['select.clasificacion']}" for="cbxClasificacion"/>
+                <p:selectOneMenu id="cbxClasificacion" value="#{peliculaBean.registro.idClasificacion}" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{tradPel['select.selecClasificacion']}" itemValue="#{null}"/>
+                    <f:selectItems value="#{peliculaBean.clasificacionList}" var="d" itemValue="#{d}" itemLabel="#{d.clasificacion} #{d.descripcion}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="#{tradPel['select.genero']}"/>
+                <p:selectCheckboxMenu value="#{peliculaBean.registro.generoList}" required="false" multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width:300px" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItems value="#{peliculaBean.allGenero}" var="g" itemValue="#{g}" itemLabel="#{g.nombre}"/>
+                </p:selectCheckboxMenu>
+                <p:outputLabel value="#{tradPel['select.duracion']}" for="txtDuracion"/>
+                <p:inputText value="#{peliculaBean.registro.duracion}" id="txtDuracion" required="true"/>
+                <p:outputLabel value="#{tradPel['select.fecha']}" for="fechaEstreno"/>
+                <p:calendar id="fechaEstreno" value="#{peliculaBean.registro.fechaEstreno}" showOn="button" navigator="true" pattern="yyyy-MM-dd"/>
+                <p:outputLabel value="#{tradPel['select.sinopsis']}" for="txtSinopsis"/>
+                <p:inputTextarea value="#{peliculaBean.registro.sinopsis}" id="txtSinopsis" />
+            </h:panelGrid>
+            <rs:botones backinBean="#{peliculaBean}" idbackingBean="#{peliculaBean.registro.idPelicula}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
