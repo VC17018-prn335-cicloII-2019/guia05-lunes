@@ -33,7 +33,9 @@ import ues.occ.edu.sv.ingenieria.prn335.guia05.control.PeliculaFacade;
 @Named(value = "peliculaBean")
 @ViewScoped
 public class PeliculaBean extends BackingBean<Pelicula> implements Serializable {
-
+/**
+ * Se injectan todas las entidades que ocupa la entidad pelicula.
+ */
     @Inject
     private PeliculaFacade pelicula;
     @Inject
@@ -49,7 +51,7 @@ public class PeliculaBean extends BackingBean<Pelicula> implements Serializable 
     @PostConstruct
     @Override
     public void iniciar() {
-        super.iniciar(); //To change body of generated methods, choose Tools | Templates.
+        super.iniciar(); //Super para invocar el objeto de la clase padre.
         iniciarRelaciones();
     }
 

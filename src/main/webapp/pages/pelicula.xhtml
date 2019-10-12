@@ -45,9 +45,9 @@
                 <p:dataExporter type="pdf" target="Pelicula" fileName="VistaPeliculas"/>
             </h:commandLink>
         </h:form>
-            <h1><p:outputLabel>CRUD vista Pelicula</p:outputLabel></h1>
-        <h:form id="formulariocrud" >
-            <h:panelGrid columns="2" id="formulariodatos">
+        <center><h1><p:outputLabel>CRUD</p:outputLabel></h1></center>
+        <center><h:form id="formulariocrud">
+                <h:panelGrid columns="2" id="formulariodatos" class="date">
                 <p:outputLabel value="#{tradPel['select.id']}" for="txtId"/>
                 <p:inputNumber value="#{peliculaBean.registro.idPelicula}" id="txtId" disabled="false" decimalPlaces="0" required="true"/>
                 <p:outputLabel value="#{tradPel['select.titulo']}" for="txtTitulo"/>
@@ -72,9 +72,9 @@
                 <p:calendar id="fechaEstreno" value="#{peliculaBean.registro.fechaEstreno}" showOn="button" navigator="true" pattern="yyyy-MM-dd"/>
                 <p:outputLabel value="#{tradPel['select.sinopsis']}" for="txtSinopsis"/>
                 <p:inputTextarea value="#{peliculaBean.registro.sinopsis}" id="txtSinopsis" />
-            </h:panelGrid>
+            </h:panelGrid><br/>
             <rs:botones backinBean="#{peliculaBean}" idbackingBean="#{peliculaBean.registro.idPelicula}"/>
-        </h:form>
+        </h:form></center>
     </ui:define>
 </ui:composition>
 

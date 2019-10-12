@@ -44,7 +44,11 @@ public abstract class BackingBean<T> {
         this.modelo.setRowIndex(-1);
         registro = null;
     }
-
+/** 
+ * Los siguientes metodosson los botones CRUD, cancelar para que sean dinamicos 
+ * con el composite.
+ * @param event 
+ */
     public void onRowSelect(SelectEvent event) {
         registro = (T) event.getObject();
     }
@@ -82,6 +86,11 @@ public abstract class BackingBean<T> {
         }
     }
 
+    /**
+     * Se crea el metodo lazyData model para que sea dinamico para todas 
+     * las entidades.
+     * @return 
+     */
     public LazyDataModel<T> Modelo() {
         try {
             modelo = new LazyDataModel<T>() {
